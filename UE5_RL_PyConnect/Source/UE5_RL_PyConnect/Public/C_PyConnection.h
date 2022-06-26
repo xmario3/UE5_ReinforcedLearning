@@ -43,7 +43,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	FString PythonServerIP = TEXT("127.0.0.1");
 
-	uint8* B_DatiDaRitornare = new uint8[40];
+	uint8* B_DatiDaRitornare = new uint8[44];
 	TArray<float> DatiDaRitornare;
 
 	uint8* DatiRicevuti = new uint8[32];
@@ -57,12 +57,16 @@ public:
 	float Distanza_robot_TA;
 	float Distanza_robot_TB;
 
+	UPROPERTY(BlueprintReadWrite)
+	bool isCollisionOccurred = false;
 	
 
 	// dati raccolti da mandare
 	FVector* Target_Coord	= new FVector(0.0, 0.0, 0.0);
 	FVector* EE_Coord		= new FVector(0.0, 0.0, 0.0);
 	FQuat* EE_Rotator		= new FQuat(0.0, 0.0, 0.0,0.0);
+	// 0.0 ok; 1.0 Collision
+	float AuxCom = 0.0; 
 	
 	//oggetti in scena
 	UPROPERTY(EditAnywhere)

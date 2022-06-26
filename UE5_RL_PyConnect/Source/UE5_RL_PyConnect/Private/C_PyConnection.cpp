@@ -9,7 +9,7 @@ AC_PyConnection::AC_PyConnection()
 	Robot_Angoli_Ricevuti.Init(0, 6);
 	Robot_Angoli_Rotatori.Init(FRotator(0.0), 6);
 
-	DatiDaRitornare.Init(0.0, 10);
+	DatiDaRitornare.Init(0.0, 11);
 
 }
 
@@ -43,6 +43,7 @@ void AC_PyConnection::Tick(float DeltaTime)
 		// se nel tik prima ho ricevuto dei dati, faccio rilevazioni e rispondo
 		if (isPendingLettura)
 		{
+			
 			PreparaRispostaDati();
 
 			DatiDaRitornare[0] = Target_Coord->X;
@@ -57,11 +58,18 @@ void AC_PyConnection::Tick(float DeltaTime)
 			DatiDaRitornare[7] = EE_Rotator->Y;
 			DatiDaRitornare[8] = EE_Rotator->Z;
 			DatiDaRitornare[9] = EE_Rotator->W;
+			DatiDaRitornare[10]= 0.0;
 
+			// se il sistema rileva collisione, mando segnale apposito
+			if (isCollisionOccurred) {
+				DatiDaRitornare[10] = 1.0;
+			}
+
+			// converto in binario
 			B_DatiDaRitornare = reinterpret_cast<uint8*>(DatiDaRitornare.GetData());
 
 			//li spedisco
-			SocketConPython->Send(B_DatiDaRitornare, 40, BytesSent);
+			SocketConPython->Send(B_DatiDaRitornare, 44, BytesSent);
 			ContatorePacchettiMandati++;
 
 			isPendingLettura = false;
